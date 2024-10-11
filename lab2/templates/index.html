@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequency Analysis</title>
+</head>
+<body>
+    <h1>Frequency Analysis</h1>
+
+    <form id="intercept">
+        <label for="text-input">Enter text for analysis:</label><br>
+        <textarea id="text-input" name="text" rows="4" cols="50" required></textarea><br><br>
+
+        <input type="submit" value="Find Frequency"/>
+    </form>
+
+    <button id="substitute" value="Make Substitution">Make Substitution</button>
+<br>
+
+    <button id="count-digraphs">Count Digraphs</button>
+    <button id="count-trigraphs">Count Trigraphs</button>
+    <button id="count-doubles">Count Doubles</button>
+
+    <h2>Cipher Text</h2>
+    <textarea id="cipher-text" rows="10" cols="50" readonly></textarea>
+
+
+    <div id="frequencies-output"></div>
+
+
+
+
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+</body>
+</html>

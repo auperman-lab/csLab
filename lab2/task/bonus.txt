@@ -1,0 +1,4 @@
+Additional condition.
+Develop a program in one of the chosen programming languages that will receive the encrypted text as input, will analyze
+and display the frequency of each character and will have a mechanism to substitute the encrypted character with the
+appropriate one from the classical alphabet. The program must provide an intuitive user interface.
