@@ -1,4 +1,4 @@
-import { generateFrequencyTable } from './utils.js';
+import {generateDigraphTable, generateFrequencyTable, substituteMapFetcher} from './utils.js';
 
 export async function fetchFrequencies() {
     try {
@@ -27,6 +27,31 @@ export async function fetchFrequencies() {
     }
 }
 
+export async function fetchDigraphs() {
+    try {
+        const response = await fetch("/get-digraphs");
+        if (!response.ok) {
+            alert("cannot find digraphs")
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const jsonResponse = await response.json();
+
+        const digraphs = jsonResponse.digraphs;
+
+        const digraphsMap = {};
+
+        digraphs.forEach(({ standard, output }) => {
+            digraphsMap[standard] = output;
+        });
+
+
+        generateDigraphTable(digraphsMap);
+
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 export async function postText(text) {
     try {
         const response = await fetch("/set", {
@@ -43,4 +68,9 @@ export async function postText(text) {
         alert("Not valid text input");
         console.error(e);
     }
+}
+
+export  function fetchSubstitutions() {
+    return substituteMapFetcher();
+
 }

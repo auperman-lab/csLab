@@ -22,7 +22,6 @@ def set_freq():
     text = data["text"]
 
     if text:
-        print("Received text:", text)  # Print the received text
         try:
             analyzer.set_data(
                 body=text,
@@ -44,7 +43,6 @@ def get_freq():
     return_data = Serializable.serialize_letter_frequency(data)
 
     if data[0] and data[1]:
-        print("sent text:", return_data)  # Print the received text
         return return_data, 200
     else:
         print("sent text:", data[0], data[1])  # Print the received text
@@ -53,15 +51,13 @@ def get_freq():
 @app.route("/get-digraphs", methods=["GET"])
 def get_digraphs():
     data = analyzer.get_digraphs_frequency()
-    return_data = jsonify({
-        "digraphs": data[0],
-    })
+    return_data = Serializable.serialize_digraphs_frequency(data)
 
-    if data[0] :
-        print("sent text:", data[0])  # Print the received text
+    if data :
+        print("sent text:", return_data)  # Print the received text
         return return_data, 200
     else:
-        return jsonify({"error":  "there is no text to be analyzed"}), 500
+        return jsonify({"error":  "there arent any digraphs to be found "}), 500
 
 @app.route("/get-trigraphs", methods=["GET"])
 def get_trigraphs():

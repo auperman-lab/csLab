@@ -21,3 +21,18 @@ class Serializable:
         return {
             "letters": serialized_data
         }
+
+
+    @staticmethod
+    def serialize_digraphs_frequency(data):
+        digraphs_frequency = data
+        serialized_data = []
+
+        for digraph in digraphs_frequency:
+            serialized_data.append({
+                "standard": digraph,
+                "output": digraphs_frequency[digraph],
+            })
+        return {
+            "digraphs": serialized_data
+        }
