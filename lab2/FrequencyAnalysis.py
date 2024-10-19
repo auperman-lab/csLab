@@ -101,7 +101,7 @@ class FrequencyAnalysis:
         return self.outputDigraphsFrequencies
 
     def get_doubles_frequency(self):
-        self.__count_letter()
+        self.__count_doubles()
         self.__set_frequency(self.outputDoublesCount, self.standardDoublesCount.keys(), self.outputDoublesFrequencies)
 
         return self.outputDoublesFrequencies

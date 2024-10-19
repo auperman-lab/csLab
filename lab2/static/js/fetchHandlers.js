@@ -36,16 +36,46 @@ export async function fetchDigraphs() {
         }
         const jsonResponse = await response.json();
 
-        const digraphs = jsonResponse.digraphs;
+        const digraphsMap = readData(jsonResponse.digraphs);
 
-        const digraphsMap = {};
+        generateDigraphTable(digraphsMap, "Digraphs", 2);
 
-        digraphs.forEach(({ standard, output }) => {
-            digraphsMap[standard] = output;
-        });
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+export async function fetchTrigraphs() {
+    try {
+        const response = await fetch("/get-trigraphs");
+        if (!response.ok) {
+            alert("cannot find trigraphs")
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const jsonResponse = await response.json();
+
+        const trigraphsMap = readData(jsonResponse.trigraphs)
 
 
-        generateDigraphTable(digraphsMap);
+        generateDigraphTable(trigraphsMap, "Trigraphs", 3);
+
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+export async function fetchDoubles() {
+    try {
+        const response = await fetch("/get-doubles");
+        if (!response.ok) {
+            alert("cannot find doubles")
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const jsonResponse = await response.json();
+
+        const doublesMap = readData(jsonResponse.doubles);
+
+        generateDigraphTable(doublesMap, "Doubles", 2);
 
     } catch (e) {
         console.error(e);
@@ -73,4 +103,14 @@ export async function postText(text) {
 export  function fetchSubstitutions() {
     return substituteMapFetcher();
 
+}
+
+function readData(data){
+
+    const dataMap = {}
+    data.forEach((item ) => {
+        const [standard, output] = Object.entries(item)[0];
+        dataMap[standard] = output;
+    });
+    return dataMap
 }

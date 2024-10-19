@@ -67,45 +67,45 @@ export function generateFrequencyTable(letterCount, letterFrequency) {
     frequenciesOutput.appendChild(table);
 }
 
-export function generateDigraphTable(digraphFrequency) {
+export function generateDigraphTable(graphFrequency, graphType, maxLength) {
     const table = document.createElement("table");
     const title = document.createElement("h2");
     table.style.width = "100%";
     table.style.borderCollapse = "collapse";
 
-    title.textContent = "Digraphs Frequencies";
+    title.textContent = graphType + " Frequencies";
 
-    const digraphRow = document.createElement("tr");
+    const graphRow = document.createElement("tr");
     const outputRow = document.createElement("tr");
     const inputRow = document.createElement("tr");
 
-    const digraphHeader = document.createElement("th");
-    digraphHeader.textContent = "Digraph";
-    digraphRow.appendChild(digraphHeader);
+    const graphHeader = document.createElement("th");
+    graphHeader.textContent = graphType;
+    graphRow.appendChild(graphHeader);
 
     const outputHeader = document.createElement("th");
-    outputHeader.textContent = "Most Common Found Digraph";
+    outputHeader.textContent = "Most Common Found " + graphType;
     outputRow.appendChild(outputHeader);
 
     const inputHeader = document.createElement("th");
     inputHeader.textContent = "Edit Values";
     inputRow.appendChild(inputHeader);
 
-    for (const digraphFrequencyKey in digraphFrequency) {
+    for (const graphFrequencyKey in graphFrequency) {
         const standardCell = document.createElement("td");
-        standardCell.textContent = digraphFrequencyKey;
+        standardCell.textContent = graphFrequencyKey;
         standardCell.classList.add("letter-cell");
-        digraphRow.appendChild(standardCell);
+        graphRow.appendChild(standardCell);
 
         const outputCell = document.createElement("td");
-        outputCell.textContent = digraphFrequency[digraphFrequencyKey];
+        outputCell.textContent = graphFrequency[graphFrequencyKey];
         outputRow.appendChild(outputCell);
 
         const inputCell = document.createElement("td");
         const inputField = document.createElement("input");
         inputField.type = "text";
-        inputField.maxLength = 2;
-        inputCell.minLength = 2;
+        inputField.maxLength = maxLength;
+        inputCell.minLength = maxLength;
         inputCell.appendChild(inputField);
         inputRow.appendChild(inputCell);
 
@@ -115,7 +115,7 @@ export function generateDigraphTable(digraphFrequency) {
         });
     }
 
-    table.appendChild(digraphRow);
+    table.appendChild(graphRow);
     table.appendChild(outputRow);
     table.appendChild(inputRow);
 

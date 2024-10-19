@@ -51,10 +51,9 @@ def get_freq():
 @app.route("/get-digraphs", methods=["GET"])
 def get_digraphs():
     data = analyzer.get_digraphs_frequency()
-    return_data = Serializable.serialize_digraphs_frequency(data)
+    return_data = Serializable.serialize_graphs_frequency(data, "digraphs")
 
     if data :
-        print("sent text:", return_data)  # Print the received text
         return return_data, 200
     else:
         return jsonify({"error":  "there arent any digraphs to be found "}), 500
@@ -62,40 +61,24 @@ def get_digraphs():
 @app.route("/get-trigraphs", methods=["GET"])
 def get_trigraphs():
     data = analyzer.get_trigraphs_frequency()
-    return_data = jsonify({
-        "trigraphs": data[0],
-    })
+    return_data = Serializable.serialize_graphs_frequency(data, "trigraphs")
 
-    if data[0] :
-        print("sent text:",data[0])  # Print the received text
+    if return_data :
         return return_data, 200
     else:
-        return jsonify({"error":  "there is no text to be analyzed"}), 500
+        return jsonify({"error":  "there is no trigraphs to be found"}), 500
 
 @app.route("/get-doubles", methods=["GET"])
 def get_doubles():
-    data = analyzer.get_frequencies()
-    return_data = jsonify({
-        "doubles": data[0],
-    })
+    data = analyzer.get_doubles_frequency()
+    return_data = Serializable.serialize_graphs_frequency(data, "doubles")
 
-    if data[0] :
-        print("sent text:", data[0])  # Print the received text
+    if return_data :
         return return_data, 200
     else:
-        return jsonify({"error":  "there is no text to be analyzed"}), 500
+        return jsonify({"error":  "there is no doubles to be analyzed"}), 500
 
 
 
 if __name__ == '__main__':
    app.run()
-
-
-
-
-
-
-
-
-
-   # unde e andrei?? pasaportul de student ori cum pula se spune ce facem cu el
