@@ -35,7 +35,6 @@ export function setupEventListeners() {
 
         let substitutedText = text.value.toUpperCase();
         let substituteMap = fetchSubstitutions();
-        console.log(substituteMap);
 
         for (const [key, value] of Object.entries(substituteMap)) {
             const regex = new RegExp(key, 'g');

@@ -84,7 +84,7 @@ export function generateDigraphTable(digraphFrequency) {
     digraphRow.appendChild(digraphHeader);
 
     const outputHeader = document.createElement("th");
-    outputHeader.textContent = "Most Common";
+    outputHeader.textContent = "Most Common Found Digraph";
     outputRow.appendChild(outputHeader);
 
     const inputHeader = document.createElement("th");
@@ -105,17 +105,17 @@ export function generateDigraphTable(digraphFrequency) {
         const inputField = document.createElement("input");
         inputField.type = "text";
         inputField.maxLength = 2;
+        inputCell.minLength = 2;
         inputCell.appendChild(inputField);
         inputRow.appendChild(inputCell);
 
         inputField.addEventListener("input", (e) => {
             e.target.value = e.target.value.replace(/[^a-z]/g, '');
-            updateLetter(standardCell.textContent, e.target.value);
+            updateLetter(outputCell.textContent, e.target.value);
         });
     }
 
     table.appendChild(digraphRow);
-    table.appendChild(countRow);
     table.appendChild(outputRow);
     table.appendChild(inputRow);
 
@@ -125,9 +125,16 @@ export function generateDigraphTable(digraphFrequency) {
     frequenciesOutput.appendChild(table);
 }
 
-export function updateLetter(letter, newValue) {
-    if (letter) {
-        substituteMap[letter.toUpperCase()] = newValue;
+export function updateLetter(letterPair, newValue) {
+    if (newValue) {
+        if(letterPair.length === 1){
+            substituteMap[letterPair.toUpperCase()] = newValue;
+        }
+        else if(letterPair.length === 2 && newValue.length === 2) {
+            substituteMap[letterPair.toUpperCase()] = newValue;
+        }
+    }else{
+        substituteMap[letterPair.toUpperCase()] = letterPair.toUpperCase();
     }
 }
 
