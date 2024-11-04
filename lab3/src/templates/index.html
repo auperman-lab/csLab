@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encoding and Decoding</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            flex: 1;
+            margin: 0 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h2 {
+            text-align: center;
+        }
+        textarea, input {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="column">
+        <h2>Encoding</h2>
+        <input type="text" id="encodeKey" placeholder="Enter encoding key...">
+        <textarea id="encodeMessage" placeholder="Enter message to encode..."></textarea>
+        <button id="encodeButton">Encode</button>
+        <div id="encodedResult"></div>
+    </div>
+
+    <div class="column">
+        <h2>Decoding</h2>
+        <input type="text" id="decodeKey" placeholder="Enter decoding key...">
+        <textarea id="decodeMessage" placeholder="Enter message to decode..."></textarea>
+        <button id="decodeButton">Decode</button>
+        <div id="decodedResult"></div>
+    </div>
+
+    <script>
+        document.getElementById('encodeButton').addEventListener('click', function() {
+            const message = document.getElementById('encodeMessage').value.replace(/\s+/g, '');
+            const key = document.getElementById('encodeKey').value.replace(/\s+/g, '');
+            fetch('http://127.0.0.1:5000/encrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message.toUpperCase(), key: key.toUpperCase() })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('encodedResult').innerText = data.cryptogram || data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById('decodeButton').addEventListener('click', function() {
+            const message = document.getElementById('decodeMessage').value.replace(/\s+/g, '');
+            const key = document.getElementById('decodeKey').value.replace(/\s+/g, '');  // Get the decoding key
+            // Replace this fetch call with your decoding endpoint
+            fetch('http://127.0.0.1:5000/decrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message.toUpperCase(), key: key.toUpperCase() })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('decodedResult').innerText = data.message || data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
