@@ -1,14 +1,9 @@
-import os
-
 from flask import Flask, render_template, Response, request, jsonify
-from flask_cors import CORS
-
 from lab3.src.const import ALPHABET
 from lab3.src.validator import validate_message, validate_key
 from lab3.src.vigenere_algorithm import encrypt_vigenere, decrypt_vigenere
 
 app = Flask(__name__)
-
 
 
 
