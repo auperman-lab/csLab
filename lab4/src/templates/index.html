@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encoding and Decoding</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            flex: 1;
+            margin: 0 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        h2 {
+            text-align: center;
+        }
+        textarea, input {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="column">
+        <h2>DES Encoding</h2>
+        <input type="text" id="encodeKey" placeholder="Enter encoding key...">
+        <textarea id="encodeMessage" placeholder="Enter message to encode..."></textarea>
+        <button id="encodeButton">Encode</button>
+        <div id="encodedResult"></div>
+    </div>
+
+    <div class="column">
+        <h2>K+ encoding</h2>
+        <input type="text" id="decodeKey" placeholder="Enter decoding key...">
+        <button id="decodeButton">Encode key</button>
+        <div id="decodedResult"></div>
+    </div>
+
+    <script>
+        function displayDecodedResult(binaryString, regularString) {
+    const decodedResultDiv = document.getElementById("decodedResult");
+
+    // Create a container to hold both results
+    const resultContainer = document.createElement("div");
+    resultContainer.style.marginBottom = "10px"; // Adds space between the results
+
+    // Create a label for the binary string
+    const binaryLabel = document.createElement("div");
+    binaryLabel.style.fontWeight = "bold";
+    binaryLabel.textContent = "Binary key+:";
+    resultContainer.appendChild(binaryLabel);
+
+    // Display the binary string with preformatted text for better readability
+    const binaryDisplay = document.createElement("pre");
+    binaryDisplay.style.backgroundColor = "#f4f4f4";
+    binaryDisplay.style.padding = "10px";
+    binaryDisplay.style.border = "1px solid #ddd";
+    binaryDisplay.style.borderRadius = "5px";
+    binaryDisplay.style.whiteSpace = "pre-wrap"; // Allows long strings to wrap
+    binaryDisplay.textContent = binaryString;
+    resultContainer.appendChild(binaryDisplay);
+
+    // Create a label for the regular string
+    const regularLabel = document.createElement("div");
+    regularLabel.style.fontWeight = "bold";
+    regularLabel.style.marginTop = "10px";
+    regularLabel.textContent = "String key+:";
+    resultContainer.appendChild(regularLabel);
+
+    // Display the decoded regular string
+    const regularDisplay = document.createElement("div");
+    regularDisplay.style.padding = "10px";
+    regularDisplay.style.backgroundColor = "#f9f9f9";
+    regularDisplay.style.border = "1px solid #ddd";
+    regularDisplay.style.borderRadius = "5px";
+    regularDisplay.textContent = regularString;
+    resultContainer.appendChild(regularDisplay);
+
+    // Append the result container to the decodedResult div
+    decodedResultDiv.innerHTML = ''; // Clear any previous results
+    decodedResultDiv.appendChild(resultContainer);
+}
+        function displayEcodedResult(binaryString, regularString) {
+    const decodedResultDiv = document.getElementById("encodedResult");
+
+    // Create a container to hold both results
+    const resultContainer = document.createElement("div");
+    resultContainer.style.marginBottom = "10px"; // Adds space between the results
+
+    // Create a label for the binary string
+    const binaryLabel = document.createElement("div");
+    binaryLabel.style.fontWeight = "bold";
+    binaryLabel.textContent = "Binary message: ";
+    resultContainer.appendChild(binaryLabel);
+
+    // Display the binary string with preformatted text for better readability
+    const binaryDisplay = document.createElement("pre");
+    binaryDisplay.style.backgroundColor = "#f4f4f4";
+    binaryDisplay.style.padding = "10px";
+    binaryDisplay.style.border = "1px solid #ddd";
+    binaryDisplay.style.borderRadius = "5px";
+    binaryDisplay.style.whiteSpace = "pre-wrap"; // Allows long strings to wrap
+    binaryDisplay.textContent = binaryString;
+    resultContainer.appendChild(binaryDisplay);
+
+    // Create a label for the regular string
+    const regularLabel = document.createElement("div");
+    regularLabel.style.fontWeight = "bold";
+    regularLabel.style.marginTop = "10px";
+    regularLabel.textContent = "String message: ";
+    resultContainer.appendChild(regularLabel);
+
+    // Display the decoded regular string
+    const regularDisplay = document.createElement("div");
+    regularDisplay.style.padding = "10px";
+    regularDisplay.style.backgroundColor = "#f9f9f9";
+    regularDisplay.style.border = "1px solid #ddd";
+    regularDisplay.style.borderRadius = "5px";
+    regularDisplay.textContent = regularString;
+    resultContainer.appendChild(regularDisplay);
+
+    // Append the result container to the decodedResult div
+    decodedResultDiv.innerHTML = ''; // Clear any previous results
+    decodedResultDiv.appendChild(resultContainer);
+}
+
+        document.getElementById('encodeButton').addEventListener('click', function() {
+            const message = document.getElementById('encodeMessage');
+            const key = document.getElementById('encodeKey');
+            console.log(message.value);
+            console.log(key.value);
+
+            fetch('http://127.0.0.1:5000/encrypt', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: (message.value), key: (key.value)})
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayEcodedResult(data.cryptogram_str, data.cryptogram_bits)
+                // document.getElementById('encodedResult').innerText = data.cryptogram_str + "\n" + data.cryptogram_bits + "\n" || data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById('decodeButton').addEventListener('click', function() {
+            const key = document.getElementById('decodeKey');  // Get the decoding key
+            fetch('http://127.0.0.1:5000/kplus', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ key: key.value })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                displayDecodedResult(data.kPlusAsBits,  data.kPlusAsString);
+                // document.getElementById('decodedResult').innerText = data.kPlusAsBits + "\n" +  data.kPlusAsString + "\n" || data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>

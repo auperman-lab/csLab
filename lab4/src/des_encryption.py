@@ -1,4 +1,4 @@
-from lab4.const import ip_permutations, f_perm, pc1_permutations, e_bit_permutation, pc2_permutations, p_permutations, \
+from lab4.src.const import ip_permutations, f_perm, pc1_permutations, e_bit_permutation, pc2_permutations, p_permutations, \
     s_blocks
 
 
